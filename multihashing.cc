@@ -24,7 +24,7 @@ extern "C" {
     #include "x15.h"
     #include "whirlpoolx.h"
     #include "fresh.h"
-    #include "Lyra2RE.h"
+    #include "Lyra2RE/Lyra2RE.h"
     #include "zr5.h"
 }
 
@@ -619,6 +619,26 @@ Handle<Value> lyra2re(const Arguments& args) {
     return scope.Close(buff->handle_);
 }
 
+Handle<Value> lyra2re2(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    lyra2re2_hash(input, output);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
+
 
 Handle<Value> zr5(const Arguments& args) {
     HandleScope scope;
@@ -667,6 +687,7 @@ void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("whirlpoolx"), FunctionTemplate::New(whirlpoolx)->GetFunction());
     exports->Set(String::NewSymbol("fresh"), FunctionTemplate::New(fresh)->GetFunction());
     exports->Set(String::NewSymbol("lyra2re"), FunctionTemplate::New(lyra2re)->GetFunction());
+    exports->Set(String::NewSymbol("lyra2re2"), FunctionTemplate::New(lyra2re2)->GetFunction());
     exports->Set(String::NewSymbol("zr5"), FunctionTemplate::New(zr5)->GetFunction());
     exports->Set(String::NewSymbol("ziftr"), FunctionTemplate::New(zr5)->GetFunction());
 }
