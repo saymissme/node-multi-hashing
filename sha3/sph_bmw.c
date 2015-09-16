@@ -34,10 +34,6 @@
 #include <string.h>
 #include <limits.h>
 
-#ifdef __cplusplus
-extern "C"{
-#endif
-
 #include "sph_bmw.h"
 
 #if SPH_SMALL_FOOTPRINT && !defined SPH_SMALL_FOOTPRINT_BMW
@@ -960,6 +956,3 @@ sph_bmw512_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 
 #endif
 
-#ifdef __cplusplus
-}
-#endif
