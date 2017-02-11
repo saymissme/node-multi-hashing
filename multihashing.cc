@@ -11,6 +11,7 @@ extern "C" {
     #include "scryptn.h"
     #include "skein.h"
     #include "x11.h"
+    #include "gost.h"
     #include "groestl.h"
     #include "blake.h"
     #include "fugue.h"
@@ -25,6 +26,8 @@ extern "C" {
     #include "whirlpoolx.h"
     #include "fresh.h"
     #include "Lyra2RE/Lyra2RE.h"
+    #include "Lyra2RE/Lyra2.h"
+    #include "Lyra2RE/Lyra2Z.h"
     #include "zr5.h"
 }
 
@@ -76,6 +79,28 @@ Handle<Value> x11(const Arguments& args) {
     uint32_t input_len = Buffer::Length(target);
 
     x11_hash(input, output, input_len);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
+
+Handle<Value> gost(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    gost_hash(input, output, input_len);
 
     Buffer* buff = Buffer::New(output, 32);
     return scope.Close(buff->handle_);
@@ -639,6 +664,25 @@ Handle<Value> lyra2re2(const Arguments& args) {
     return scope.Close(buff->handle_);
 }
 
+Handle<Value> lyra2z(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    lyra2z_hash(input, output);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
 
 Handle<Value> zr5(const Arguments& args) {
     HandleScope scope;
@@ -665,6 +709,7 @@ Handle<Value> zr5(const Arguments& args) {
 void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("quark"), FunctionTemplate::New(quark)->GetFunction());
     exports->Set(String::NewSymbol("x11"), FunctionTemplate::New(x11)->GetFunction());
+    exports->Set(String::NewSymbol("gost"), FunctionTemplate::New(gost)->GetFunction());
     exports->Set(String::NewSymbol("scrypt"), FunctionTemplate::New(scrypt)->GetFunction());
     exports->Set(String::NewSymbol("scryptn"), FunctionTemplate::New(scryptn)->GetFunction());
     exports->Set(String::NewSymbol("scryptjane"), FunctionTemplate::New(scryptjane)->GetFunction());
@@ -688,6 +733,7 @@ void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("fresh"), FunctionTemplate::New(fresh)->GetFunction());
     exports->Set(String::NewSymbol("lyra2re"), FunctionTemplate::New(lyra2re)->GetFunction());
     exports->Set(String::NewSymbol("lyra2re2"), FunctionTemplate::New(lyra2re2)->GetFunction());
+    exports->Set(String::NewSymbol("lyra2z"), FunctionTemplate::New(lyra2z)->GetFunction());
     exports->Set(String::NewSymbol("zr5"), FunctionTemplate::New(zr5)->GetFunction());
     exports->Set(String::NewSymbol("ziftr"), FunctionTemplate::New(zr5)->GetFunction());
 }
