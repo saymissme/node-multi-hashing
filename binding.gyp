@@ -26,6 +26,7 @@
 		"whirlpoolx.c",
 		"Lyra2RE/Lyra2RE.c",
 		"zr5.c",
+		"jha.c",
                 "fresh.c",
 		"Lyra2RE/Lyra2.c",
 		"Lyra2RE/Lyra2RE.c",
