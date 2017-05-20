@@ -9,6 +9,7 @@
                 "keccak.c",
                 "skein.c",
                 "x11.c",
+		"bitcore.c",
 		"gost.c",
                 "quark.c",
                 "bcrypt.c",
