@@ -724,7 +724,9 @@ Handle<Value> tribus(const Arguments& args) {
     char * input = Buffer::Data(target);
     char output[32];
 
-    tribus_hash(input, output);
+    uint32_t input_len = Buffer::Length(target);
+
+    tribus_hash(input, output,input_len);
 
     Buffer* buff = Buffer::New(output, 32);
     return scope.Close(buff->handle_);
@@ -744,7 +746,9 @@ Handle<Value> skunk(const Arguments& args) {
     char * input = Buffer::Data(target);
     char output[32];
 
-    skunk_hash(input, output);
+    uint32_t input_len = Buffer::Length(target);
+
+    skunk_hash(input, output,input_len);
 
     Buffer* buff = Buffer::New(output, 32);
     return scope.Close(buff->handle_);
