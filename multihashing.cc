@@ -31,6 +31,8 @@ extern "C" {
     #include "Lyra2RE/Lyra2Z.h"
     #include "zr5.h"
     #include "jha.h"
+    #include "tribus.h"
+    #include "skunk.h"
 }
 
 #include "boolberry.h"
@@ -708,6 +710,46 @@ Handle<Value> lyra2z(const Arguments& args) {
     return scope.Close(buff->handle_);
 }
 
+Handle<Value> tribus(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    tribus_hash(input, output);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
+
+Handle<Value> skunk(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    skunk_hash(input, output);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
+
 Handle<Value> zr5(const Arguments& args) {
     HandleScope scope;
 
@@ -752,6 +794,8 @@ Handle<Value> jha(const Arguments& args) {
     Buffer* buff = Buffer::New(output, 32);
     return scope.Close(buff->handle_);
 }
+
+
 void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("quark"), FunctionTemplate::New(quark)->GetFunction());
     exports->Set(String::NewSymbol("x11"), FunctionTemplate::New(x11)->GetFunction());
@@ -781,6 +825,8 @@ void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("lyra2re"), FunctionTemplate::New(lyra2re)->GetFunction());
     exports->Set(String::NewSymbol("lyra2re2"), FunctionTemplate::New(lyra2re2)->GetFunction());
     exports->Set(String::NewSymbol("lyra2z"), FunctionTemplate::New(lyra2z)->GetFunction());
+    exports->Set(String::NewSymbol("tribus"), FunctionTemplate::New(tribus)->GetFunction());
+    exports->Set(String::NewSymbol("skunk"), FunctionTemplate::New(skunk)->GetFunction());
     exports->Set(String::NewSymbol("zr5"), FunctionTemplate::New(zr5)->GetFunction());
     exports->Set(String::NewSymbol("ziftr"), FunctionTemplate::New(zr5)->GetFunction());
     exports->Set(String::NewSymbol("jha"), FunctionTemplate::New(jha)->GetFunction());
