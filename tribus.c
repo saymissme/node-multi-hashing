@@ -8,7 +8,7 @@
 #include "sha3/sph_keccak.h"
 #include "sha3/sph_echo.h"
 
-#define _ALIGN(x) __attribute__ ((aligned(x)))
+#include "common.h"
 
 void tribus_hash(const char* input, char* output, uint32_t len)
 {
