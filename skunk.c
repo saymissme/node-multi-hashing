@@ -13,8 +13,8 @@
 void skunk_hash(const char* input, char* output, uint32_t len)
 {
 
-	sph_skein512_contex     ctx_skein;
-	sph_cubehash512_contex  ctx_cube;
+	sph_skein512_context    ctx_skein;
+	sph_cubehash512_context ctx_cube;
 	sph_fugue512_context    ctx_fugue;
 	sph_gost512_context     ctx_gost;
 
