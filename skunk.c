@@ -1,12 +1,13 @@
+#include "skunk.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
 
-#include <sha3/sph_skein.h>
-#include <sha3/sph_cubehash.h>
-#include <sha3/sph_fugue.h>
-#include <sha3/sph_gost.h>
+#include "sha3/sph_skein.h"
+#include "sha3/sph_cubehash.h"
+#include "sha3/sph_fugue.h"
+#include "sha3/sph_gost.h"
 
 
 void skunk_hash(const char *input, char* output, uint32_t len)
