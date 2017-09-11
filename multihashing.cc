@@ -33,6 +33,7 @@ extern "C" {
     #include "jha.h"
     #include "tribus.h"
     #include "skunk.h"
+    #include "hsr.h"
 }
 
 #include "boolberry.h"
@@ -799,6 +800,28 @@ Handle<Value> jha(const Arguments& args) {
     return scope.Close(buff->handle_);
 }
 
+Handle<Value> hsr(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    hsr_hash(input, output, input_len);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
+
 
 void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("quark"), FunctionTemplate::New(quark)->GetFunction());
@@ -834,6 +857,7 @@ void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("zr5"), FunctionTemplate::New(zr5)->GetFunction());
     exports->Set(String::NewSymbol("ziftr"), FunctionTemplate::New(zr5)->GetFunction());
     exports->Set(String::NewSymbol("jha"), FunctionTemplate::New(jha)->GetFunction());
+    exports->Set(String::NewSymbol("hsr"), FunctionTemplate::New(hsr)->GetFunction());
 }
 
 NODE_MODULE(multihashing, init)
