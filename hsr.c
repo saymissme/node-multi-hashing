@@ -86,7 +86,7 @@ void hsr_hash(const char* input, char* output, uint32_t len)
 
 	sm3_init(&ctx_sm3);
     sph_sm3(&ctx_sm3, hashA, 64);
-    sph_sm3_close(&ctx_sm3, hashB));
+    sph_sm3_close(&ctx_sm3, hashB);
 
     sph_hamsi512_init (&ctx_hamsi1);
     sph_hamsi512 (&ctx_hamsi1, hashB, 64);
