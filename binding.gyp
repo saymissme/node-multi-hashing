@@ -32,6 +32,7 @@
 		"jha.c",
                 "fresh.c",
 		"hsr.c",
+		"neoscrypt.c",
 		"Lyra2RE/Lyra2.c",
 		"Lyra2RE/Lyra2RE.c",
 		"Lyra2RE/Lyra2Z.c",
