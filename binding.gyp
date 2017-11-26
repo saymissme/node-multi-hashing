@@ -36,6 +36,7 @@
 		"Lyra2RE/Lyra2.c",
 		"Lyra2RE/Lyra2RE.c",
 		"Lyra2RE/Lyra2Z.c",
+		"Lyra2RE/Lyra2H.c",
 		"Lyra2RE/Sponge.c",
 		"Lyra2RE/vtc_blake.c",
 		"Lyra2RE/vtc_bmw.c",

@@ -29,6 +29,7 @@ extern "C" {
     #include "Lyra2RE/Lyra2RE.h"
     #include "Lyra2RE/Lyra2.h"
     #include "Lyra2RE/Lyra2Z.h"
+    #include "Lyra2RE/Lyra2H.h"
     #include "zr5.h"
     #include "jha.h"
     #include "tribus.h"
@@ -713,6 +714,26 @@ Handle<Value> lyra2z(const Arguments& args) {
     return scope.Close(buff->handle_);
 }
 
+Handle<Value> lyra2h(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    lyra2h_hash(input, output);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
+
 Handle<Value> tribus(const Arguments& args) {
     HandleScope scope;
 
@@ -875,6 +896,7 @@ void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("lyra2re"), FunctionTemplate::New(lyra2re)->GetFunction());
     exports->Set(String::NewSymbol("lyra2re2"), FunctionTemplate::New(lyra2re2)->GetFunction());
     exports->Set(String::NewSymbol("lyra2z"), FunctionTemplate::New(lyra2z)->GetFunction());
+    exports->Set(String::NewSymbol("lyra2h"), FunctionTemplate::New(lyra2h)->GetFunction());
     exports->Set(String::NewSymbol("tribus"), FunctionTemplate::New(tribus)->GetFunction());
     exports->Set(String::NewSymbol("skunk"), FunctionTemplate::New(skunk)->GetFunction());
     exports->Set(String::NewSymbol("zr5"), FunctionTemplate::New(zr5)->GetFunction());
