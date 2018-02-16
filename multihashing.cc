@@ -355,7 +355,7 @@ Handle<Value> allium(const Arguments& args) {
     char * input = Buffer::Data(target);
     char output[32];
     
-    allium_hash(input, output, input_len);
+    allium_hash(input, output);
 
     Buffer* buff = Buffer::New(output, 32);
     return scope.Close(buff->handle_);
