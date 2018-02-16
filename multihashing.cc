@@ -14,6 +14,7 @@ extern "C" {
     #include "bitcore.h"
     #include "gost.h"
     #include "groestl.h"
+    #include "allium.h"
     #include "blake.h"
     #include "fugue.h"
     #include "qubit.h"
@@ -30,6 +31,7 @@ extern "C" {
     #include "Lyra2RE/Lyra2.h"
     #include "Lyra2RE/Lyra2Z.h"
     #include "Lyra2RE/Lyra2H.h"
+    #include "blake2s.h"
     #include "zr5.h"
     #include "jha.h"
     #include "tribus.h"
@@ -339,6 +341,26 @@ Handle<Value> groestlmyriad(const Arguments& args) {
     return scope.Close(buff->handle_);
 }
 
+Handle<Value> allium(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+    
+    allium_hash(input, output, input_len);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
+
 
 Handle<Value> blake(const Arguments& args) {
     HandleScope scope;
@@ -357,6 +379,26 @@ Handle<Value> blake(const Arguments& args) {
     uint32_t input_len = Buffer::Length(target);
 
     blake_hash(input, output, input_len);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
+
+Handle<Value> blake2s(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    blake2s_hash(input, output);
 
     Buffer* buff = Buffer::New(output, 32);
     return scope.Close(buff->handle_);
@@ -880,7 +922,9 @@ void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("skein"), FunctionTemplate::New(skein)->GetFunction());
     exports->Set(String::NewSymbol("groestl"), FunctionTemplate::New(groestl)->GetFunction());
     exports->Set(String::NewSymbol("groestlmyriad"), FunctionTemplate::New(groestlmyriad)->GetFunction());
+    exports->Set(String::NewSymbol("allium"), FunctionTemplate::New(allium)->GetFunction());
     exports->Set(String::NewSymbol("blake"), FunctionTemplate::New(blake)->GetFunction());
+    exports->Set(String::NewSymbol("blake2s"), FunctionTemplate::New(blake2s)->GetFunction());
     exports->Set(String::NewSymbol("fugue"), FunctionTemplate::New(fugue)->GetFunction());
     exports->Set(String::NewSymbol("qubit"), FunctionTemplate::New(qubit)->GetFunction());
     exports->Set(String::NewSymbol("hefty1"), FunctionTemplate::New(hefty1)->GetFunction());
