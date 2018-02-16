@@ -318,7 +318,8 @@ int blake2s_final( blake2s_state *S, uint8_t *out, uint8_t outlen )
 	memset( S->buf + S->buflen, 0, 2 * BLAKE2S_BLOCKBYTES - S->buflen ); /* Padding */
 	blake2s_compress( S, S->buf );
 
-	for( int i = 0; i < 8; ++i ) /* Output full hash to temp buffer */
+	int i;
+	for( i = 0; i < 8; ++i ) /* Output full hash to temp buffer */
 		store32( buffer + sizeof( S->h[i] ) * i, S->h[i] );
 
 	memcpy( out, buffer, outlen );
