@@ -38,6 +38,7 @@ extern "C" {
     #include "skunk.h"
     #include "hsr.h"
     #include "neoscrypt.h"
+    #include "phi1612.h"
 
 }
 
@@ -111,6 +112,28 @@ Handle<Value> gost(const Arguments& args) {
     uint32_t input_len = Buffer::Length(target);
 
     gost_hash(input, output, input_len);
+
+    Buffer* buff = Buffer::New(output, 32);
+    return scope.Close(buff->handle_);
+}
+
+Handle<Value> phi1612(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() < 1)
+        return except("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return except("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    phi1612_hash(input, output, input_len);
 
     Buffer* buff = Buffer::New(output, 32);
     return scope.Close(buff->handle_);
@@ -913,6 +936,7 @@ void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("quark"), FunctionTemplate::New(quark)->GetFunction());
     exports->Set(String::NewSymbol("x11"), FunctionTemplate::New(x11)->GetFunction());
     exports->Set(String::NewSymbol("gost"), FunctionTemplate::New(gost)->GetFunction());
+    exports->Set(String::NewSymbol("phi1612"), FunctionTemplate::New(phi1612)->GetFunction());
     exports->Set(String::NewSymbol("bitcore"), FunctionTemplate::New(bitcore)->GetFunction());
     exports->Set(String::NewSymbol("scrypt"), FunctionTemplate::New(scrypt)->GetFunction());
     exports->Set(String::NewSymbol("scryptn"), FunctionTemplate::New(scryptn)->GetFunction());
