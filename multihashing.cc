@@ -38,8 +38,9 @@ extern "C" {
     #include "skunk.h"
     #include "hsr.h"
     #include "neoscrypt.h"
-    #include "phi1612.h"
     #include "phi2.h"
+    #include "phi1612.h"
+
 
 }
 
@@ -140,7 +141,7 @@ Handle<Value> phi1612(const Arguments& args) {
     return scope.Close(buff->handle_);
 }
 
-Handle<Value> lux(const Arguments& args) {
+Handle<Value> phi2(const Arguments& args) {
     HandleScope scope;
 
     if (args.Length() < 1)
@@ -156,7 +157,7 @@ Handle<Value> lux(const Arguments& args) {
 
     uint32_t input_len = Buffer::Length(target);
 
-    lux_hash(input, output, input_len);
+    phi2_hash(input, output, input_len);
 
     Buffer* buff = Buffer::New(output, 32);
     return scope.Close(buff->handle_);
