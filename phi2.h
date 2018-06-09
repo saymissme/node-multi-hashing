@@ -1,5 +1,5 @@
-#ifndef PHI_H
-#define PHI_H
+#ifndef PHI2_H
+#define PHI2_H
 
 #ifdef __cplusplus
 extern "C" {
