@@ -140,7 +140,7 @@ Handle<Value> phi1612(const Arguments& args) {
     return scope.Close(buff->handle_);
 }
 
-Handle<Value> phi2(const Arguments& args) {
+Handle<Value> lux(const Arguments& args) {
     HandleScope scope;
 
     if (args.Length() < 1)
@@ -156,7 +156,7 @@ Handle<Value> phi2(const Arguments& args) {
 
     uint32_t input_len = Buffer::Length(target);
 
-    phi2_hash(input, output, input_len);
+    lux_hash(input, output, input_len);
 
     Buffer* buff = Buffer::New(output, 32);
     return scope.Close(buff->handle_);
