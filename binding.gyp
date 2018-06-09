@@ -12,6 +12,7 @@
 		"bitcore.c",
 		"gost.c",
 		"phi1612.c",
+		"phi2.c",
                 "quark.c",
                 "bcrypt.c",
                 "groestl.c",
