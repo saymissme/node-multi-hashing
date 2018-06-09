@@ -55,7 +55,7 @@ void phi2_hash(const char* input, char* output, uint32_t len)
     sph_skein512(&ctx_skein, (const void*)hash, 64);
     sph_skein512_close(&ctx_skein, (void*)hash);
 
-	for (int i=0; i<32; i++)
+	for (i=0; i<32; i++)
 		hash[i] ^= hash[i+32];
 
 	memcpy(output, hash, 32);
